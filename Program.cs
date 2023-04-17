@@ -58,7 +58,7 @@ static class Program
 
     private static void addMovies()
     {
-        List<Movie> newMovies = new List<Movie>();
+        StreamWriter sw = new StreamWriter(movieFile, true);
         do
         {
             Movie movie = new Movie();
@@ -71,6 +71,11 @@ static class Program
                 if (id == 0)
                 {
                     Console.WriteLine("Invalid movie ID! Must be greater than 0.");
+                }
+                else if (movies.Where(m => m.movieId == id).FirstOrDefault() != null)
+                {
+                    Console.WriteLine("That movie ID already exists! Please use another one.");
+                    id = 0;
                 }
             }
             movie.movieId = id;
@@ -85,15 +90,9 @@ static class Program
             movie.genres = new List<string>();
             movie.genres.AddRange(genreList);
 
-            newMovies.Add(movie);
-        } while (promptForAnother());
-
-        StreamWriter sw = new StreamWriter(movieFile, true);
-        newMovies.ForEach(movie =>
-        {
-            sw.WriteLine(movie.Serialize());
             movies.Add(movie);
-        });
+            sw.WriteLine(movie.Serialize());
+        } while (promptForAnother());
         sw.Close();
     }
 
