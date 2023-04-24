@@ -8,6 +8,7 @@ static class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Welcome!");
+        string scrubbedFile = FileScrubber.ScrubMovies(movieFile);
         movies = RetrieveMovies();
         string response;
         do
