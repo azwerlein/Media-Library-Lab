@@ -8,7 +8,7 @@ static class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Welcome!");
-        movies = retrieveMovies();
+        movies = RetrieveMovies();
         string response;
         do
         {
@@ -19,21 +19,17 @@ static class Program
             response = Console.ReadLine();
             if (response == "1")
             {
-                readMovies();
+                ReadMovies();
             }
             else if (response == "2")
             {
-                addMovies();
+                AddMovies();
             }
         }
         while (response == "1" | response == "2");
-
-        StreamWriter sw = new StreamWriter(movieFile, true);
-
-        sw.Close();
     }
 
-    private static List<Movie> retrieveMovies()
+    private static List<Movie> RetrieveMovies()
     {
         List<Movie> movies = new List<Movie>();
         StreamReader sr = new StreamReader(movieFile);
@@ -50,13 +46,13 @@ static class Program
         return movies;
     }
 
-    private static List<Movie> readMovies()
+    private static List<Movie> ReadMovies()
     {
         movies.ForEach(movie => Console.WriteLine(movie.ToString()));
         return movies;
     }
 
-    private static void addMovies()
+    private static void AddMovies()
     {
         StreamWriter sw = new StreamWriter(movieFile, true);
         do
@@ -90,13 +86,30 @@ static class Program
             movie.genres = new List<string>();
             movie.genres.AddRange(genreList);
 
+            Console.WriteLine("Who is the director?");
+            string director = Console.ReadLine();
+            movie.director = director;
+
+            TimeSpan timeSpan = TimeSpan.Zero;
+            while (timeSpan == TimeSpan.Zero)
+            {
+                Console.WriteLine("What is the time span of the movie? Format: hours:minutes:seconds");
+                string response = Console.ReadLine();
+                TimeSpan.TryParse(response, out timeSpan);
+                if (timeSpan == TimeSpan.Zero)
+                {
+                    Console.WriteLine("Invalid time format!");
+                }
+            }
+            movie.runningTime = timeSpan;
+
             movies.Add(movie);
             sw.WriteLine(movie.Serialize());
-        } while (promptForAnother());
+        } while (PromptForAnother());
         sw.Close();
     }
 
-    private static bool promptForAnother()
+    private static bool PromptForAnother()
     {
         Console.Write("Add another movie? (Y/N) ");
         string? response = Console.ReadLine().ToUpper();
