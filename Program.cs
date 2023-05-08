@@ -9,7 +9,7 @@ static class Program
     {
         Console.WriteLine("Welcome!");
         string scrubbedFile = FileScrubber.ScrubMovies(movieFile);
-        movies = RetrieveMovies();
+        movies = RetrieveMovies(scrubbedFile);
         string response;
         do
         {
@@ -24,16 +24,16 @@ static class Program
             }
             else if (response == "2")
             {
-                AddMovies();
+                AddMovies(scrubbedFile);
             }
         }
         while (response == "1" | response == "2");
     }
 
-    private static List<Movie> RetrieveMovies()
+    private static List<Movie> RetrieveMovies(string file)
     {
         List<Movie> movies = new List<Movie>();
-        StreamReader sr = new StreamReader(movieFile);
+        StreamReader sr = new StreamReader(file);
         sr.ReadLine();
         while (!sr.EndOfStream)
         {
@@ -53,9 +53,9 @@ static class Program
         return movies;
     }
 
-    private static void AddMovies()
+    private static void AddMovies(string file)
     {
-        StreamWriter sw = new StreamWriter(movieFile, true);
+        StreamWriter sw = new StreamWriter(file, true);
         do
         {
             Movie movie = new Movie();
