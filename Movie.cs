@@ -6,6 +6,15 @@ public class Movie
     public TimeSpan runningTime { get; set; }
     public List<string> genres { get; set; }
 
+    /**
+     * Returns the information in a format that is easy to read.
+     */
+    public string DisplayInfo()
+    {
+        string genreString = string.Join(", ", genres);
+        return $"Id: {movieId}\nTitle: {title}\nDirector: {director}\nRun time: {runningTime}\nGenres: {genreString}";
+    }
+
     public static Movie Deserialize(string input)
     {
         try
@@ -58,7 +67,16 @@ public class Movie
     public string Serialize()
     {
         string genreList = string.Join('|', genres);
-        return $"{movieId},{title},{genreList}";
+        string info = $"{movieId},{title},{genreList}";
+        if (director != null)
+        {
+            info = info + $",{director}";
+        }
+        if (runningTime != null)
+        {
+            info = info + $",{runningTime}";
+        }
+        return info;
     }
 
     public override string ToString()

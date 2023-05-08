@@ -20,7 +20,7 @@ static class Program
             response = Console.ReadLine();
             if (response == "1")
             {
-                ReadMovies();
+                DisplayMovies();
             }
             else if (response == "2")
             {
@@ -47,9 +47,9 @@ static class Program
         return movies;
     }
 
-    private static List<Movie> ReadMovies()
+    private static List<Movie> DisplayMovies()
     {
-        movies.ForEach(movie => Console.WriteLine(movie.ToString()));
+        movies.ForEach(movie => Console.WriteLine(movie.DisplayInfo()));
         return movies;
     }
 
