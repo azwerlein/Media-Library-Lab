@@ -1,4 +1,5 @@
 ﻿using NLog;
+using System.Text.RegularExpressions;
 
 static class Program
 {
@@ -16,6 +17,7 @@ static class Program
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("1) Read movies");
             Console.WriteLine("2) Add new movies");
+            Console.WriteLine("3) Search for movies");
             Console.WriteLine("Press any other key to exit.");
             response = Console.ReadLine();
             if (response == "1")
@@ -26,8 +28,12 @@ static class Program
             {
                 AddMovies(scrubbedFile);
             }
+            else if (response == "3")
+            {
+                FindMovie();
+            }
         }
-        while (response == "1" | response == "2");
+        while (response == "1" | response == "2" | response == "3");
     }
 
     private static List<Movie> RetrieveMovies(string file)
@@ -115,5 +121,17 @@ static class Program
         Console.Write("Add another movie? (Y/N) ");
         string? response = Console.ReadLine().ToUpper();
         return response == "Y";
+    }
+
+    private static void FindMovie()
+    {
+        Console.WriteLine("Please enter the title of the movie you want to find.");
+        string input = Console.ReadLine();
+        IEnumerable<Movie> results = movies.Where(movie => Regex.IsMatch(movie.title, input, RegexOptions.IgnoreCase));
+        Console.WriteLine($"Results: {results.Count()}");
+        foreach (Movie movie in results)
+        {
+            Console.WriteLine(movie.DisplayInfo());
+        }
     }
 }
